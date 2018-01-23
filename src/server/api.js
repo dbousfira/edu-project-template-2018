@@ -20,6 +20,21 @@ router.post('/', function(req, res) {
   res.send(req.query);
 });
 
+// get episodes list
+router.get('/', function(req, res) {
+  var loaded = [];
+  fs.readdirSync(config.data).forEach(function(self) {
+      var file = require(config.data + "/" + self);
+      loaded.push({
+          name : file.name, 
+          code : file.code,
+          score : file.score
+      });
+  });
+  res.end();
+  return loaded;
+});
+
 router.get('/{id}', function(req, res) {
   fs.readFile('/../../data/episodes.json', (err, data) => {
   if (err) throw err;
