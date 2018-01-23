@@ -4,19 +4,13 @@ const fs = require('fs');
 const config = require('./config.js');
 const uuidv4 = require('uuid/v4');
 
-// define the home page route
-router.get('/', function(req, res) {
-  res.send('GET');
-});
-
-// OK
+// add a new episode
 router.post('/', function(req, res) {
   req.query.id = uuidv4();
   fs.writeFile(config.data + '/' + req.query.id + '.json', JSON.stringify(req.query), (err) => {
     if (err) throw err;
     console.log('It\'s saved!');
   });
-
   res.send(req.query);
 });
 
@@ -31,20 +25,34 @@ router.get('/', function(req, res) {
           score : file.score
       });
   });
+  res.send(loaded);
+});
+
+// delete an episode
+router.delete('/:id', function(req, res) {
+  var path = config.data + '/' + req.params.id + '.json';
+  fs.unlinkSync(path, function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
   res.end();
-  return loaded;
 });
 
-router.get('/{id}', function(req, res) {
-  fs.readFile('/../../data/episodes.json', (err, data) => {
-  if (err) throw err;
-  console.log(data);
-});
-  res.send('GET all');
-});
-
-router.delete('/{id}', function(req, res) {
-  res.send('DELETE');
+// get an episode by id
+router.get('/:id', function(req, res) {
+  var path = config.data + '/' + req.params.id + '.json';
+  var file = require(path);
+  if (file == null) {
+    res.status(404).end();
+  }
+  else {
+    res.send({
+      name: file.name,
+      code: file.code,
+      score: file.score
+    });
+  }
 });
 
 router.put('/{id}', function(req, res) {
