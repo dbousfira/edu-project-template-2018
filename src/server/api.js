@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const config = require('./config.js');
 const uuidv4 = require('uuid/v4');
+const json = require('json-update');
 
 // add a new episode
 router.post('/', function(req, res) {
@@ -19,12 +20,12 @@ router.post('/', function(req, res) {
 router.get('/', function(req, res) {
   var loaded = [];
   fs.readdirSync(config.data).forEach(function(self) {
-      var file = require(config.data + "/" + self);
-      loaded.push({
-          name : file.name, 
-          code : file.code,
-          score : file.score
-      });
+    var file = require(config.data + "/" + self);
+    loaded.push({
+      name: file.name,
+      code: file.code,
+      score: file.score
+    });
   });
   res.send(loaded);
 });
@@ -35,8 +36,7 @@ router.get('/:id', function(req, res) {
   var file = require(path);
   if (file == null) {
     res.status(404).end();
-  }
-  else {
+  } else {
     res.send({
       name: file.name,
       code: file.code,
@@ -79,9 +79,8 @@ router.delete('/:id', function(req, res) {
     if (err) {
       console.log(err);
     }
-});
+  });
   res.end();
 });
-
 
 module.exports = router;
