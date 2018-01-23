@@ -1,86 +1,42 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const config = require('./config.js');
-const uuidv4 = require('uuid/v4');
-const json = require('json-update');
+const repo = require('./repository.js');
 
 // add a new episode
 router.post('/', function(req, res) {
-  var id = uuidv4();
-  fs.writeFile(config.data + '/' + id + '.json', JSON.stringify(req.query), (err) => {
-    if (err) throw err;
-    console.log('It\'s saved!');
-  });
-
+  var id = repo.insert(req.query.name, req.query.code, req.query.score);
   res.send(id);
 });
 
 // get episodes list
 router.get('/', function(req, res) {
-  var loaded = [];
-  fs.readdirSync(config.data).forEach(function(self) {
-    var file = require(config.data + "/" + self);
-    loaded.push({
-      name: file.name,
-      code: file.code,
-      score: file.score
-    });
-  });
-  res.send(loaded);
+  res.send(repo.findAll());
 });
 
 // get an episode by id
 router.get('/:id', function(req, res) {
-  var path = config.data + '/' + req.params.id + '.json';
-  var file = require(path);
-  if (file == null) {
+  var episode = repo.findById(req.params.id);
+  if (episode == null) {
     res.status(404).end();
-  } else {
-    res.send({
-      name: file.name,
-      code: file.code,
-      score: file.score
-    });
   }
+  res.send(episode);
 });
 
+// update an episode
 router.put('/:id', function(req, res) {
-  var ep = req.query;
-
-  if (ep.name)
-    json.update(config.data + '/' + req.params.id + '.json', {
-      name: ep.name
-    }).then(function(dat) {
-      console.log('Name updated!');
-    });
-
-  if (ep.code)
-    json.update(config.data + '/' + req.params.id + '.json', {
-      code: ep.code
-    }).then(function(dat) {
-      console.log('Code updated!');
-    });
-
-  if (ep.score)
-    json.update(config.data + '/' + req.params.id + '.json', {
-      score: ep.score
-    }).then(function(dat) {
-      console.log('Score updated!');
-    });
-
-  res.send('PUT');
+  var json = repo.update(req.params.id, req.query);
+  res.send(json);
 });
 
 // delete an episode
 router.delete('/:id', function(req, res) {
-  var path = config.data + '/' + req.params.id + '.json';
-  fs.unlinkSync(path, function(err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-  res.end();
+  var deleted = repo.delete(req.params.id);
+  if (deleted) {
+    res.end();
+  }
+  else {
+    res.status(404).end();
+  }
 });
 
 module.exports = router;
