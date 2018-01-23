@@ -3,22 +3,26 @@ const uuidv4 = require('uuid/v4');
 const fs = require('fs');
 const config = require('./config.js');
 
+var path = (id) => {
+    if (!id.endsWith('.json')) {
+        id += '.json';
+    }
+    return config.data + '/' + id; 
+}
+
 module.exports.findAll = function() {
     var loaded = [];
     fs.readdirSync(config.data).forEach(function(self) {
-        var file = require(config.data + "/" + self);
-        loaded.push({
-            name : file.name, 
-            code : file.code,
-            score : file.score
+        var file = require(path(self));
+        loaded.push({ 
+            name : file.name, code : file.code, score : file.score
         });
     });
     return loaded;
 }
 
 module.exports.findById = function(id) {
-    var path = config.data + '/' + id + '.json';
-    var file = require(path);
+    var file = require(path(id));
     return {
         name: file.name,
         code: file.code,
@@ -27,8 +31,7 @@ module.exports.findById = function(id) {
 }
 
 module.exports.delete = function(id) {
-    var path = config.data + '/' + id + '.json';
-    fs.unlinkSync(path, function(err) {
+    fs.unlinkSync(path(id), function(err) {
       if (err) {
         console.log(err);
         return false;
@@ -39,50 +42,35 @@ module.exports.delete = function(id) {
 
 module.exports.insert = function(name, code, score) {
     var id = uuidv4();
-    var path = config.data + '/' + id + '.json';
     var data = {
-        name: name,
-        code: code,
-        score: score
+        name: name, code: code, score: score
     };
-    fs.writeFile(path, JSON.stringify(data), (err) => {
+    fs.writeFile(path(id), JSON.stringify(data), (err) => {
       if (err) {
         console.log(err);
-      }
-      else {
-        console.log('It\'s saved!');
       }
     });
     return id;
 }
 
 module.exports.update = function(id, ep) {
-    var path = config.data + '/' + id + '.json';
-    if (ep.name)
-    json.update(path, {
-      name: ep.name
-    }).then(function(dat) {
-      console.log('Name updated!');
-    });
-
-    if (ep.code)
-        json.update(path, {
-        code: ep.code
-        }).then(function(dat) {
-        console.log('Code updated!');
+    if (ep.name) {
+        json.update(path(id), {
+            name: ep.name
         });
-
-    if (ep.score)
-        json.update(path, {
-        score: ep.score
-        }).then(function(dat) {
-        console.log('Score updated!');
+    }
+    if (ep.code) {
+        json.update(path(id), {
+            code: ep.code
         });
-
-    var file = require(path);
+    }
+    if (ep.score) {
+        json.update(path(id), {
+            score: ep.score
+        });
+    }
+    var file = require(path(id));
     return {
-        name: ep.name ? ep.name : file.name,
-        code: ep.code ? ep.code : file.code,
-        score: ep.score ? ep.score : file.score
+        name: ep.name ? ep.name : file.name, code: ep.code ? ep.code : file.code, score: ep.score ? ep.score : file.score
     };
 }

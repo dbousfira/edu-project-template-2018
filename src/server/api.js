@@ -10,7 +10,8 @@ router.post('/', function(req, res) {
 
 // get episodes list
 router.get('/', function(req, res) {
-  res.send(repo.findAll());
+  var list = repo.findAll();
+  res.send(list);
 });
 
 // get an episode by id
@@ -19,7 +20,9 @@ router.get('/:id', function(req, res) {
   if (episode == null) {
     res.status(404).end();
   }
-  res.send(episode);
+  else {
+    res.send(episode);
+  }
 });
 
 // update an episode
