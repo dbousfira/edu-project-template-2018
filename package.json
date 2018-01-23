@@ -38,6 +38,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "json-update": "^3.0.0",
     "node-find-files": "0.0.4",
     "node-uuid": "^1.4.7",
     "uuid": "^3.2.0"
