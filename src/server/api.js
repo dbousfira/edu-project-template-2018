@@ -5,7 +5,8 @@ const repo = require('./repository.js');
 // add a new episode
 router.post('/', function(req, res) {
   var id = repo.insert(req.query.name, req.query.code, req.query.score);
-  res.send(id);
+  console.log("POST");
+  res.status(201).send(id);
 });
 
 // get episodes list
@@ -19,8 +20,7 @@ router.get('/:id', function(req, res) {
   var episode = repo.findById(req.params.id);
   if (episode == null) {
     res.status(404).end();
-  }
-  else {
+  } else {
     res.send(episode);
   }
 });
@@ -35,9 +35,8 @@ router.put('/:id', function(req, res) {
 router.delete('/:id', function(req, res) {
   var deleted = repo.delete(req.params.id);
   if (deleted) {
-    res.end();
-  }
-  else {
+    res.status(204).end();
+  } else {
     res.status(404).end();
   }
 });
