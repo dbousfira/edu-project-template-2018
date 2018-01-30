@@ -3,74 +3,117 @@ const uuidv4 = require('uuid/v4');
 const fs = require('fs');
 const config = require('./config.js');
 
-var path = (id) => {
-    if (!id.endsWith('.json')) {
-        id += '.json';
+let Repository = function() {
+
+    let _path = function(id) {
+        if (!id.endsWith('.json')) {
+            id += '.json';
+        }
+        return config.data + '/' + id; 
     }
-    return config.data + '/' + id; 
-}
 
-module.exports.findAll = function() {
-    var loaded = [];
-    fs.readdirSync(config.data).forEach(function(self) {
-        var file = require(path(self));
-        loaded.push({ 
-            name : file.name, code : file.code, score : file.score
+    let _modify = function(id, name, value) {
+        return new Promise((resolve, reject) => {
+            json.update(_path(id), {
+                name: value
+            }).then(() => {
+                resolve();
+            }).catch((err) => {
+                reject(err);
+            });
         });
-    });
-    return loaded;
-}
+    }
+    
+    let findById = function(id) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(_path(id), function(err, data) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(JSON.parse(data));
+                }
+            });
+        });
+    }
+    
+    let findAll = function() {
+        return new Promise((resolve, reject) => {
+            fs.readdir(config.data, function(err, dir) {
+                if (err) {
+                    reject(err);
+                }
+                let promises = [];
+                dir.forEach(function(file) {
+                    promises.push(findById(file));
+                });
+                Promise.all(promises).then(function(data) {
+                    resolve(data);
+                }).catch(function(err) {
+                    reject(err);
+                });
+            });
+        });
+    }
+    
+    let remove = function(id) {
+        return new Promise((resolve, reject) => {
+            fs.unlink(_path(id), function(err) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve();
+                }
+              });
+        });
+    }
+    
+    let insert = function(name, code, score) {
+        return new Promise((resolve, reject) => {
+            let id = uuidv4();
+            let data = {
+                name: name, code: code, score: score
+            };
+            fs.writeFile(_path(id), JSON.stringify(data), (err) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(id);
+                }
+            });
+        });
+    }
+    
+    let update = function(id, ep) {
+        return new Promise((resolve, reject) => {
+            let promises = [];
+            if (ep.name) 
+                promises.push(_modify(id, 'name', ep.name));
+            if (ep.code) 
+                promises.push(_modify(id, 'code', ep.code));
+            if (ep.score) 
+                promises.push(_modify(id, 'score', ep.score));
+            Promise.all(promises).then(function() {
+                findById(id).then(function(data) {
+                    resolve(data);
+                }).catch(function(err) {
+                    reject(err);
+                });
+            }).catch(function(err) {
+                reject(err);
+            });
+        });
+    }
 
-module.exports.findById = function(id) {
-    var file = require(path(id));
     return {
-        name: file.name,
-        code: file.code,
-        score: file.score
-    };
-}
-
-module.exports.delete = function(id) {
-    fs.unlinkSync(path(id), function(err) {
-      if (err) {
-        console.log(err);
-        return false;
-      }
-    });
-    return true;
-}
-
-module.exports.insert = function(name, code, score) {
-    var id = uuidv4();
-    var data = {
-        name: name, code: code, score: score
-    };
-    fs.writeFile(path(id), JSON.stringify(data), (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-    return id;
-}
-
-module.exports.update = function(id, ep) {
-    if (ep.name) {
-        json.update(path(id), {
-            name: ep.name
-        });
+        findAll: findAll,
+        findById: findById,
+        update: update,
+        delete: remove,
+        insert: insert
     }
-    if (ep.code) {
-        json.update(path(id), {
-            code: ep.code
-        });
-    }
-    if (ep.score) {
-        json.update(path(id), {
-            score: ep.score
-        });
-    }
-    var file = require(path(id));
-    return {
-        name: ep.name ? ep.name : file.name, code: ep.code ? ep.code : file.code, score: ep.score ? ep.score : file.score
-    };
-}
+}();
+
+module.exports = Repository;
