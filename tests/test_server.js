@@ -22,7 +22,7 @@ setTimeout(function() {
       [
         path.join(__dirname, '../node_modules/.bin/jest'),
         '--verbose',
-        path.join(__dirname, 'server', 'api_spec.js')
+        path.join(__dirname, 'server', 'api_spec_2.js')
       ],
       {
         env: {

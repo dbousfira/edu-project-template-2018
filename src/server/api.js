@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const repo = require('./repository.js');
+const uuidv4 = require('uuid');
 
 // add a new episode
 router.post('/', function(req, res) {
-  repo.insert(req.query.name, req.query.code, req.query.score).then((id) => {
-    res.status(201).send(id);
+  let id = uuidv4();
+  repo.insert(id, req.query.name, req.query.code, req.query.score).then((id) => {
+    res.status(201).send({
+      'id': id,
+      'name': req.query.name,
+      'code': req.query.code,
+      'score': req.query.score
+    });
   }).catch((err) => {
     console.log(err);
     res.status(400).end();

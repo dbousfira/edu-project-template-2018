@@ -1,5 +1,4 @@
 const json = require('json-update');
-const uuidv4 = require('uuid/v4');
 const fs = require('fs');
 const config = require('./config.js');
 
@@ -69,9 +68,8 @@ let Repository = function() {
         });
     }
     
-    let insert = function(name, code, score) {
+    let insert = function(id, name, code, score) {
         return new Promise((resolve, reject) => {
-            let id = uuidv4();
             let data = {
                 name: name, code: code, score: score
             };
