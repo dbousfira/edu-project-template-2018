@@ -44,7 +44,11 @@ const common = {
         new HtmlWebpackPlugin({
             template: path.join(__dirname)+'/index.ejs'
         })
-    ]
+    ],
+    node: {
+        fs: 'empty',
+        net: 'empty'
+    }
 }
 
 if (process.env.NODE_ENV == 'dev') {
