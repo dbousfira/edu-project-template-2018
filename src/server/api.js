@@ -52,7 +52,7 @@ router.put('/:id', function(req, res) {
 // delete an episode
 router.delete('/:id', function(req, res) {
   repo.delete(req.params.id).then(() => {
-    res.status(202).end();
+    res.status(200).end();
   }).catch((err) => {
     res.status(404).end();
   });
