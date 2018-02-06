@@ -49,12 +49,23 @@ describe('Add an episode', () => {
       .done(done);
   });
 
-  it ('should have file in data', (done) => {
-      fs.stat(path.join(DATA_DIR, `${id}.json`), (err, stats) => {
-        if (err  || !stats.isFile()) {
-          fail();
-        }
-        done();
-      });
+  it('should GET all episodes', function(done) {
+    frisby.get(URL)
+      .expect("status", 200)
+      .expect('jsonTypes', '*', {
+        'name': Joi.string().required(),
+        'code': Joi.string().required(),
+        'score': Joi.number().required()
+      })
+      .done(done);
+  });
+
+  it('should have file in data', (done) => {
+    fs.stat(path.join(DATA_DIR, `${id}.json`), (err, stats) => {
+      if (err || !stats.isFile()) {
+        fail();
+      }
+      done();
+    });
   });
 });
