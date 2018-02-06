@@ -47,7 +47,8 @@ const common = {
     ],
     node: {
         fs: 'empty',
-        net: 'empty'
+        net: 'empty',
+        express: 'empty'
     }
 }
 
