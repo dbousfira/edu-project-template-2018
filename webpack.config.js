@@ -20,8 +20,7 @@ const common = {
         filename: '[name].js'
     },
     module: {
-      rules: [
-        {
+        rules: [{
           test: /\.(js|jsx)$/,
           exclude: /(node_modules|server)/,
           use: {
@@ -38,17 +37,20 @@ const common = {
             }
           }
         }
-      ]
+      ],
+    loaders: [{
+        test: /\.css$/,
+        loader:'style!css!'
+    }]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname)+'/index.ejs'
+            template: path.join(__dirname) + '/index.ejs'
         })
     ],
     node: {
         fs: 'empty',
-        net: 'empty',
-        express: 'empty'
+        net: 'empty'
     }
 }
 
