@@ -37,26 +37,38 @@ export default class List extends Component {
         return(
             <div className="container">
                 { hasData ? (
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>Score</th>
-                        </tr> 
-                        <br/>
-                        { this.state.data.map(function(ep) {
-                            return (
-                                <tr>
-                                    <th>{ ep.name }</th>
-                                    <th>{ ep.code }</th>
-                                    <th>{ ep.score }/10</th>
-                                </tr>
-                            );
-                        }) }
+                    <table className="table">
+                        <thead className="thead-inverse">
+                            <tr>
+                                <th className="text-center">Name</th>
+                                <th className="text-center">Code</th>
+                                <th className="text-center">Score</th>
+                                <th className="text-center"></th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                            { this.state.data.map(function(ep) {
+                                let ratingColor = "";
+                                if (ep.score < 3) ratingColor = "warning";
+                                if (ep.score > 7) ratingColor = "success";
+                                return (
+                                    <tr className={ "table-" + ratingColor }>
+                                        <th scope="row" className="text-center">{ ep.name }</th>
+                                        <td className="text-center">{ ep.code }</td>
+                                        <td className="text-center">{ ep.score }/10</td>
+                                        <td className="center">
+                                            <button type="button" className="close" aria-label="Delete">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            }) }
+                        </tbody>
                     </table>
                 ) : (
                     <div>
-                        <div className="danger-text">
+                        <div className="text-danger">
                             <h1>No data found</h1>
                         </div>
                     </div>

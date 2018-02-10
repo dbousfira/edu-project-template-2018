@@ -12,6 +12,7 @@ export default class App extends Component {
     <Provider store={store}>
       <Router>
         <div>
+          <br/><br/><br/>
           <List/>
         </div>
       </Router>
