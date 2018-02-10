@@ -8,7 +8,7 @@ const appElement = document.getElementById('app');
 
 ReactDOM.render(
     <AppContainer>    
-        <App />
+        <App/>
     </AppContainer>,
     appElement
 );

@@ -39,12 +39,17 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "bootstrap": "^4.0.0",
+    "css-loader": "^0.28.9",
     "express": "^4.14.0",
     "frisby": "^2.0.11",
     "fs": "0.0.1-security",
+    "jquery": "^3.3.1",
     "json-update": "^3.0.0",
     "node-find-files": "0.0.4",
     "node-uuid": "^1.4.7",
+    "popper.js": "^1.12.9",
+    "style-loader": "^0.20.1",
     "uuid": "^3.2.0"
   }
 }
