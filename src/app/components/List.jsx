@@ -8,9 +8,10 @@ export default class List extends Component {
             data: null,
             err: null
         }
+        this.delete = this.delete.bind(this);
     }
     
-    async load() {
+    load() {
         return new Promise((resolve, reject) => {
             fetch('http://localhost:3000/api/episodes/').then(res => {
                 res.json().then(parsed => {
@@ -20,7 +21,7 @@ export default class List extends Component {
         });
     }
 
-    componentDidMount() {
+    fetchData() {
         this.load().then(parsed => {
             this.setState({
                 data: parsed
@@ -32,9 +33,27 @@ export default class List extends Component {
         });
     }
 
+    delete(id) {
+        fetch('http://localhost:3000/api/episodes/' + id, {
+            method: "DELETE"
+        }).then(res => {
+            if (res.status == 200) {
+                this.fetchData();
+            }
+        }).catch(err => {
+            this.setState({
+                err: err
+            });
+        });
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
     render() {
         const hasData = this.state.data != null && this.state.data.length != 0;
-        return(
+        return (
             <div className="container">
                 { hasData ? (
                     <table className="table">
@@ -47,27 +66,31 @@ export default class List extends Component {
                             </tr> 
                         </thead>
                         <tbody>
-                            { this.state.data.map(function(ep) {
-                                let ratingColor = "";
+                            {/* Displaying all episodes */}
+                            { this.state.data.map((ep) => {
+                                let ratingColor = "active";
                                 if (ep.score < 3) ratingColor = "warning";
                                 if (ep.score > 7) ratingColor = "success";
+                                {/* Row render */}
                                 return (
                                     <tr className={ "table-" + ratingColor }>
                                         <th scope="row" className="text-center">{ ep.name }</th>
                                         <td className="text-center">{ ep.code }</td>
-                                        <td className="text-center">{ ep.score }/10</td>
-                                        <td className="center">
-                                            <button type="button" className="close" aria-label="Delete">
+                                        <td className="text-center">{ ep.score } / 10</td>
+                                        {/* Delete episode icon */}
+                                        <td>
+                                            <button type="button" className="close" aria-label="Delete" onClick={(e) => this.delete(ep.id)}>
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </td>
                                     </tr>
                                 );
-                            }) }
+                            }, this) }
                         </tbody>
                     </table>
                 ) : (
                     <div>
+                        {/* Displaying a message if there is no data to handle */}
                         <div className="text-danger">
                             <h1>No data found</h1>
                         </div>

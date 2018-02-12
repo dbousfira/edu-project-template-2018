@@ -28,8 +28,11 @@ let Repository = function() {
       fs.readFile(_path(id), function(err, data) {
         if (err) {
           reject(err);
-        } else {
-          resolve(JSON.parse(data));
+        } 
+        else {
+          let parsed = JSON.parse(data);
+          parsed["id"] = id.slice(0, -5);
+          resolve(parsed);
         }
       });
     });
