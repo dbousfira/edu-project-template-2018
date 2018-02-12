@@ -6,9 +6,10 @@ export default class List extends Component {
         super(props);
         this.state = {
             data: null,
-            err: null
+            err: null,
         }
         this.delete = this.delete.bind(this);
+        this.fetchData();
     }
     
     load() {
@@ -37,18 +38,14 @@ export default class List extends Component {
         fetch('http://localhost:3000/api/episodes/' + id, {
             method: "DELETE"
         }).then(res => {
-            if (res.status == 200) {
-                this.fetchData();
-            }
+            this.setState({
+                data: this.state.data.filter(ep => ep.id != id)
+            });
         }).catch(err => {
             this.setState({
                 err: err
             });
         });
-    }
-
-    componentDidMount() {
-        this.fetchData();
     }
 
     render() {
@@ -67,25 +64,27 @@ export default class List extends Component {
                         </thead>
                         <tbody>
                             {/* Displaying all episodes */}
-                            { this.state.data.map((ep) => {
-                                let ratingColor = "active";
-                                if (ep.score < 3) ratingColor = "warning";
-                                if (ep.score > 7) ratingColor = "success";
-                                {/* Row render */}
-                                return (
-                                    <tr className={ "table-" + ratingColor }>
-                                        <th scope="row" className="text-center">{ ep.name }</th>
-                                        <td className="text-center">{ ep.code }</td>
-                                        <td className="text-center">{ ep.score } / 10</td>
-                                        {/* Delete episode icon */}
-                                        <td>
-                                            <button type="button" className="close" aria-label="Delete" onClick={(e) => this.delete(ep.id)}>
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            }, this) }
+                            { this.state.data
+                                .map(ep => {
+                                    let ratingColor = "active";
+                                    if (ep.score < 3) ratingColor = "warning";
+                                    if (ep.score > 7) ratingColor = "success";
+                                    {/* Row render */}
+                                    return (
+                                        <tr className={ "table-" + ratingColor } key={ ep.id }>
+                                            <th scope="row" className="text-center">{ ep.name }</th>
+                                            <td className="text-center">{ ep.code }</td>
+                                            <td className="text-center">{ ep.score } / 10</td>
+                                            {/* Delete episode icon */}
+                                            <td>
+                                                <button type="button" className="close" aria-label="Delete" onClick={(e) => this.delete(ep.id)}>
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                }, this)
+                            }
                         </tbody>
                     </table>
                 ) : (
