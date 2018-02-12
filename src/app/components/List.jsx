@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import NoData from './NoData';
 
 export default class List extends Component {
 
@@ -51,7 +52,7 @@ export default class List extends Component {
     }
 
     render() {
-        const hasData = this.state.data != null && this.state.data.length != 0;
+        const hasData = this.state.data != null && this.state.data.length != 0 && err == null;
         return (
             <div className="container">
                 { hasData ? (
@@ -89,14 +90,7 @@ export default class List extends Component {
                             }
                         </tbody>
                     </table>
-                ) : (
-                    <div>
-                        {/* Displaying a message if there is no data to handle */}
-                        <div className="text-danger">
-                            <h1>No data found</h1>
-                        </div>
-                    </div>
-                )}
+                ) : ( <NoData error={ this.state.err } />)}
             </div>
         );
     }
