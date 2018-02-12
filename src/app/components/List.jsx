@@ -38,9 +38,11 @@ export default class List extends Component {
         fetch('http://localhost:3000/api/episodes/' + id, {
             method: "DELETE"
         }).then(res => {
-            this.setState({
-                data: this.state.data.filter(ep => ep.id != id)
-            });
+            if (res.status == 200) {
+                this.setState({
+                    data: this.state.data.filter(ep => ep.id != id)
+                });
+            }
         }).catch(err => {
             this.setState({
                 err: err
