@@ -25,10 +25,10 @@ export default class NoData extends Component {
                     { this.state.err ? (
                             <div>
                                 <br/>
-                                <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <a className="btn btn-primary" data-toggle="collapse" href="#details" aria-expanded="false" aria-controls="details">
                                     Something gone wrong
                                 </a>
-                                <div className="collapse" id="collapseExample">
+                                <div className="collapse" id="details">
                                     <div className="card card-block">
                                         { this.state.message }
                                     </div>
