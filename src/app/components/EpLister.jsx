@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import NoData from './NoData';
+import EpAdder from './EpAdder';
 
-export default class List extends Component {
+export default class EpLister extends Component {
 
     constructor(props) {
         super(props);
@@ -10,12 +11,13 @@ export default class List extends Component {
             err: null,
         }
         this.delete = this.delete.bind(this);
+        this.add = this.add.bind(this);
         this.fetchData();
     }
     
     load() {
         return new Promise((resolve, reject) => {
-            fetch('http://localhost:3000/api/episodes/').then(res => {
+            fetch('/api/episodes/').then(res => {
                 res.json().then(parsed => {
                     resolve(parsed);
                 }).catch(err => reject(err));
@@ -36,7 +38,7 @@ export default class List extends Component {
     }
 
     delete(id) {
-        fetch('http://localhost:3000/api/episodes/' + id, {
+        fetch('/api/episodes/' + id, {
             method: "DELETE"
         }).then(res => {
             if (res.status == 200) {
@@ -51,10 +53,19 @@ export default class List extends Component {
         });
     }
 
+    add(episode) {
+        let newData = this.state.data.splice(0);
+        newData.push(episode);
+        this.setState({
+            data: newData
+        });
+    }
+
     render() {
-        const hasData = this.state.data != null && this.state.data.length != 0 && err == null;
+        const hasData = this.state.data != null && this.state.data.length != 0;
         return (
-            <div className="container">
+            <div>
+                <EpAdder addCallback={this.add} /> <br/> <br/>
                 { hasData ? (
                     <table className="table">
                         <thead className="thead-inverse">
@@ -78,9 +89,8 @@ export default class List extends Component {
                                             <th scope="row" className="text-center">{ ep.name }</th>
                                             <td className="text-center">{ ep.code }</td>
                                             <td className="text-center">{ ep.score } / 10</td>
-                                            {/* Delete episode icon */}
                                             <td>
-                                                <button type="button" className="close" aria-label="Delete" onClick={(e) => this.delete(ep.id)}>
+                                                <button type="button" className="close" aria-label="Delete" onClick={e => this.delete(ep.id)}>
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </td>
