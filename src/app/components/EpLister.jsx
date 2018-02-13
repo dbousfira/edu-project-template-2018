@@ -89,7 +89,6 @@ export default class EpLister extends Component {
                                             <th scope="row" className="text-center">{ ep.name }</th>
                                             <td className="text-center">{ ep.code }</td>
                                             <td className="text-center">{ ep.score } / 10</td>
-                                            {/* Delete episode icon */}
                                             <td>
                                                 <button type="button" className="close" aria-label="Delete" onClick={e => this.delete(ep.id)}>
                                                     <span aria-hidden="true">&times;</span>
