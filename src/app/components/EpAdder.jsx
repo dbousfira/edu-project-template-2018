@@ -37,7 +37,7 @@ export default class EpAdder extends Component {
     render() {
         const hasScore = this.state.score != null;
         return (
-            <div>
+            <div className="px-5 py-5 bg-inverse">
                 <form>
                     <div className="row">
                         <div className="col">

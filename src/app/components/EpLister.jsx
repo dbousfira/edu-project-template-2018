@@ -66,8 +66,8 @@ export default class EpLister extends Component {
         return (
             <div>
                 <div className="container">
-                    <EpAdder addCallback={this.add} /> <br/> <br/>
-                </div>
+                    <EpAdder addCallback={this.add} /> 
+                </div> <br/> <br/>
                 { hasData ? (
                     <table className="table">
                         <thead className="thead-inverse">
@@ -85,7 +85,6 @@ export default class EpLister extends Component {
                                     let ratingColor = "active";
                                     if (ep.score < 3) ratingColor = "warning";
                                     if (ep.score > 7) ratingColor = "success";
-                                    {/* Row render */}
                                     return (
                                         <tr className={ "table-" + ratingColor } key={ ep.id }>
                                             <th scope="row" className="text-center">{ ep.name }</th>
