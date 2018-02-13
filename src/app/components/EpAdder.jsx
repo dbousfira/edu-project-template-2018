@@ -22,11 +22,8 @@ export default class EpAdder extends Component {
     }
 
     addEpisode() {
-        const name = this.state.name;
-        const code = this.state.code;
-        const score = this.state.score;
-        if (!(score == null || code == null || code == "" || name == null || name == "")) {
-            const params = '?name=' + name + '&code=' + code + '&score=' + score;
+        if (this.state.score != null) {
+            const params = '?name=' + this.state.name + '&code=' + this.state.code + '&score=' + this.state.score;
             fetch("/api/episodes" + params, {
                 method: "POST"
             }).then(res => {
@@ -46,7 +43,7 @@ export default class EpAdder extends Component {
         const hasScore = this.state.score != null;
         return (
             <div className="px-5 py-5 bg-inverse rounded">
-                <form>
+                <form onSubmit={this.addEpisode}>
                     <div className="row">
                         <div className="col">
                             <input type="text" required="true" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} value={this.state.name} />
@@ -76,7 +73,7 @@ export default class EpAdder extends Component {
                             </div>
                         </div>
                         <div className="col">
-                            <input type="submit" className="btn btn-primary btn-block" value="Add" onClick={e => this.addEpisode()} />
+                            <input type="submit" className="btn btn-primary btn-block" value="Add" />
                         </div>
                     </div>
                 </form>
