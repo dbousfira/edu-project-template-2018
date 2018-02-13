@@ -5,8 +5,8 @@ export default class EpAdder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: null,
-            code: null,
+            name: "",
+            code: "",
             score: null,
             addCallback: props.addCallback
         }
@@ -22,29 +22,37 @@ export default class EpAdder extends Component {
     }
 
     addEpisode() {
-        if (this.state.score == null)
-            return;
-        const params = '?name=' + this.state.name + '&code=' + this.state.code + '&score=' + this.state.score;
-        fetch("/api/episodes" + params, {
-            method: "POST"
-        }).then(res => {
-            res.json().then(parsed => {
-                this.state.addCallback(parsed);
+        const name = this.state.name;
+        const code = this.state.code;
+        const score = this.state.score;
+        if (!(score == null || code == null || code == "" || name == null || name == "")) {
+            const params = '?name=' + name + '&code=' + code + '&score=' + score;
+            fetch("/api/episodes" + params, {
+                method: "POST"
+            }).then(res => {
+                res.json().then(parsed => {
+                    this.state.addCallback(parsed);
+                    this.setState({
+                        name: "",
+                        code: "",
+                        score: null
+                    })
+                });
             });
-        });
+        }
     }
 
     render() {
         const hasScore = this.state.score != null;
         return (
-            <div className="px-5 py-5 bg-inverse">
+            <div className="px-5 py-5 bg-inverse rounded">
                 <form>
                     <div className="row">
                         <div className="col">
-                            <input type="text" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} />
+                            <input type="text" required="true" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} value={this.state.name} />
                         </div>
                         <div className="col">
-                            <input type="text" className="form-control" placeholder="Code" onChange={e => this.updateValue('code', e)} />
+                            <input type="text" required="true" className="form-control" placeholder="Code" onChange={e => this.updateValue('code', e)} value={this.state.code} />
                         </div>
                         <div className="col">
                         <div className="dropdown">
@@ -68,7 +76,7 @@ export default class EpAdder extends Component {
                             </div>
                         </div>
                         <div className="col">
-                            <input type="button" className="btn btn-primary btn-block" value="Add" onClick={e => this.addEpisode()} />
+                            <input type="submit" className="btn btn-primary btn-block" value="Add" onClick={e => this.addEpisode()} />
                         </div>
                     </div>
                 </form>
