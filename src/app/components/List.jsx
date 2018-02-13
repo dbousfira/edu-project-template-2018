@@ -90,7 +90,7 @@ export default class List extends Component {
                             }
                         </tbody>
                     </table>
-                ) : ( <NoData error={ this.state.err } />)}
+                ) : ( <NoData error={ this.state.err }/>)}
             </div>
         );
     }

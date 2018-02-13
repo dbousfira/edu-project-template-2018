@@ -30,7 +30,7 @@ export default class NoData extends Component {
                                 </a>
                                 <div className="collapse" id="collapseExample">
                                     <div className="card card-block">
-                                        { this.props.error }
+                                        { this.state.message }
                                     </div>
                                 </div>
                             </div>
