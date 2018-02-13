@@ -65,7 +65,9 @@ export default class EpLister extends Component {
         const hasData = this.state.data != null && this.state.data.length != 0;
         return (
             <div>
-                <EpAdder addCallback={this.add} /> <br/> <br/>
+                <div className="container">
+                    <EpAdder addCallback={this.add} /> <br/> <br/>
+                </div>
                 { hasData ? (
                     <table className="table">
                         <thead className="thead-inverse">

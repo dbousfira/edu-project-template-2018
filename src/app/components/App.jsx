@@ -11,7 +11,7 @@ export default class App extends Component {
     return (
     <Provider store={store}>
       <Router>
-        <div className="container">
+        <div className="container-fluid">
           <br/><br/><br/>
           <EpLister/>
         </div>
