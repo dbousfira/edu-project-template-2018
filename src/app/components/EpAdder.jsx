@@ -22,6 +22,8 @@ export default class EpAdder extends Component {
     }
 
     addEpisode() {
+        if (this.state.score == null)
+            return;
         const params = '?name=' + this.state.name + '&code=' + this.state.code + '&score=' + this.state.score;
         fetch("/api/episodes" + params, {
             method: "POST"
