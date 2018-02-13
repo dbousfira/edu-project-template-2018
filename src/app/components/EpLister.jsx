@@ -83,8 +83,8 @@ export default class EpLister extends Component {
                             { this.state.data
                                 .map(ep => {
                                     let ratingColor = "active";
-                                    if (ep.score < 3) ratingColor = "warning";
-                                    if (ep.score > 7) ratingColor = "success";
+                                    if (ep.score <= 3) ratingColor = "warning";
+                                    if (ep.score >= 7) ratingColor = "success";
                                     return (
                                         <tr className={ "table-" + ratingColor } key={ ep.id }>
                                             <th scope="row" className="text-center">{ ep.name }</th>
