@@ -14,19 +14,15 @@ export default class EpLister extends Component {
         this.add = this.add.bind(this);
         this.fetchData();
     }
-    
-    load() {
-        return new Promise((resolve, reject) => {
+
+    fetchData() {
+        new Promise((resolve, reject) => {
             fetch('/api/episodes/').then(res => {
                 res.json().then(parsed => {
                     resolve(parsed);
                 }).catch(err => reject(err));
             }).catch(err => reject(err));
-        });
-    }
-
-    fetchData() {
-        this.load().then(parsed => {
+        }).then(parsed => {
             this.setState({
                 data: parsed
             });
@@ -80,16 +76,15 @@ export default class EpLister extends Component {
                         </thead>
                         <tbody>
                             {/* Displaying all episodes */}
-                            { this.state.data
-                                .map(ep => {
+                            { this.state.data.map(ep => {
                                     let ratingColor = "active";
                                     if (ep.score <= 3) ratingColor = "warning";
                                     if (ep.score >= 7) ratingColor = "success";
                                     return (
-                                        <tr className={ "table-" + ratingColor } key={ ep.id }>
-                                            <th scope="row" className="text-center">{ ep.name }</th>
-                                            <td className="text-center">{ ep.code }</td>
-                                            <td className="text-center">{ ep.score } / 10</td>
+                                        <tr className={"table-" + ratingColor} key={ep.id}>
+                                            <th scope="row" className="text-center">{ep.name}</th>
+                                            <td className="text-center">{ep.code}</td>
+                                            <td className="text-center">{ep.score} / 10</td>
                                             <td>
                                                 <button type="button" className="close" aria-label="Delete" onClick={e => this.delete(ep.id)}>
                                                     <span aria-hidden="true">&times;</span>
@@ -101,7 +96,7 @@ export default class EpLister extends Component {
                             }
                         </tbody>
                     </table>
-                ) : ( <NoData error={ this.state.err }/>)}
+                ) : ( <NoData error={this.state.err}/>)}
             </div>
         );
     }

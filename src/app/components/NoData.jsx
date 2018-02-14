@@ -25,7 +25,7 @@ export default class NoData extends Component {
                     { this.state.err ? (
                             <div>
                                 <br/>
-                                <a className="btn btn-primary" data-toggle="collapse" href="#details" aria-expanded="false" aria-controls="details">
+                                <a className="btn btn-danger" data-toggle="collapse" href="#details" aria-expanded="false" aria-controls="details">
                                     Something gone wrong
                                 </a>
                                 <div className="collapse" id="details">

@@ -33,7 +33,7 @@ export default class EpAdder extends Component {
                         name: "",
                         code: "",
                         score: null
-                    })
+                    });
                 });
             });
         }
@@ -41,39 +41,33 @@ export default class EpAdder extends Component {
 
     render() {
         const hasScore = this.state.score != null;
+        let scoreChoices = [];
+        for (let i = 1; i <= 10; i++) {
+            scoreChoices.push(<li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>{i}</a></li>);
+        }
         return (
             <div className="px-5 py-5 bg-inverse rounded">
                 <form onSubmit={this.addEpisode}>
                     <div className="row">
                         <div className="col">
-                            <input type="text" required="true" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} value={this.state.name} />
+                            <input type="text" required="true" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} value={this.state.name}/>
                         </div>
                         <div className="col">
-                            <input type="text" required="true" className="form-control" placeholder="Code" onChange={e => this.updateValue('code', e)} value={this.state.code} />
+                            <input type="text" required="true" className="form-control" placeholder="Code" onChange={e => this.updateValue('code', e)} value={this.state.code}/>
                         </div>
                         <div className="col">
-                        <div className="dropdown">
-                            <button className="btn btn-secondary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
-                                { hasScore ? (
-                                    this.state.score + " / 10"
-                                ):("Score") }
-                            <span className="caret"></span></button>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>1</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>2</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>3</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>4</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>5</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>6</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>7</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>8</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>9</a></li>
-                                    <li><a href="#" className="dropdown-item" onClick={e => this.updateValue('score', e)}>10</a></li>
-                                </ul>
+                            <div className="dropdown">
+                                <button className="btn btn-secondary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+                                    { hasScore ? (
+                                        this.state.score + " / 10"
+                                    ):("Score") }
+                                    <span className="caret"></span>
+                                </button>
+                                <ul className="dropdown-menu">{scoreChoices}</ul>
                             </div>
                         </div>
                         <div className="col">
-                            <input type="submit" className="btn btn-primary btn-block" value="Add" />
+                            <input type="submit" className="btn btn-primary btn-block" value="Add"/>
                         </div>
                     </div>
                 </form>
