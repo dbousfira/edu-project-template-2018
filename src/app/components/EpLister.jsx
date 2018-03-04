@@ -16,15 +16,11 @@ export default class EpLister extends Component {
     }
 
     fetchData() {
-        new Promise((resolve, reject) => {
-            fetch('/api/episodes/').then(res => {
-                res.json().then(parsed => {
-                    resolve(parsed);
-                }).catch(err => reject(err));
-            }).catch(err => reject(err));
-        }).then(parsed => {
-            this.setState({
-                data: parsed
+        fetch('/api/episodes/').then(res => {
+            res.json().then(parsed => {
+                this.setState({
+                    data: parsed
+                });
             });
         }).catch(err => {
             this.setState({
@@ -96,7 +92,7 @@ export default class EpLister extends Component {
                             }
                         </tbody>
                     </table>
-                ) : ( <NoData error={this.state.err}/>)}
+                ) : ( <NoData error={this.state.err}/> )}
             </div>
         );
     }

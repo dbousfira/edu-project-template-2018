@@ -4,13 +4,14 @@ export default class NoData extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            err: props.error != null,
-            message: props.error
-        };
+        this.setProps(props);
     }
 
     componentWillReceiveProps(props) {
+        this.setProps(props);
+    }
+
+    setProps(props) {
         this.state = {
             err: props.error != null,
             message: props.error

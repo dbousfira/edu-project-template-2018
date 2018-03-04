@@ -50,10 +50,10 @@ export default class EpAdder extends Component {
                 <form onSubmit={this.addEpisode}>
                     <div className="row">
                         <div className="col">
-                            <input type="text" required="true" className="form-control" placeholder="Name" onChange={e => this.updateValue('name', e)} value={this.state.name}/>
+                            <input type="text" required="true" onChange={e => this.updateValue('name', e)} value={this.state.name} className="form-control" placeholder="Name"/>
                         </div>
                         <div className="col">
-                            <input type="text" required="true" className="form-control" placeholder="Code" onChange={e => this.updateValue('code', e)} value={this.state.code}/>
+                            <input type="text" required="true" onChange={e => this.updateValue('code', e)} value={this.state.code} className="form-control" placeholder="Code"/>
                         </div>
                         <div className="col">
                             <div className="dropdown">
