@@ -5,6 +5,7 @@ import EditModal from './EditModal';
 
 export default class EpLister extends Component {
 
+<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +24,32 @@ export default class EpLister extends Component {
   handler() {
     window.location.reload();
   }
+=======
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: null,
+            err: null,
+        }
+        this.delete = this.delete.bind(this);
+        this.add = this.add.bind(this);
+        this.fetchData();
+    }
+
+    fetchData() {
+        fetch('/api/episodes/').then(res => {
+            res.json().then(parsed => {
+                this.setState({
+                    data: parsed
+                });
+            });
+        }).catch(err => {
+            this.setState({
+                err: err
+            });
+        });
+    }
+>>>>>>> 1bd540d07f5356e2c675ed6b62c8126fd377e364
 
   load() {
     return new Promise((resolve, reject) => {
@@ -115,11 +142,50 @@ export default class EpLister extends Component {
               </tbody>
             </table>
             <div>
+<<<<<<< HEAD
               {
                 isSelected
                   ? (<EditModal action={this.handler} ep={this.state.selectedEpisode}/>)
                   : (<span></span>)
               }
+=======
+                <div className="container">
+                    <EpAdder addCallback={this.add} /> 
+                </div> <br/> <br/>
+                { hasData ? (
+                    <table className="table">
+                        <thead className="thead-inverse">
+                            <tr>
+                                <th className="text-center">Name</th>
+                                <th className="text-center">Code</th>
+                                <th className="text-center">Score</th>
+                                <th className="text-center"></th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                            {/* Displaying all episodes */}
+                            { this.state.data.map(ep => {
+                                    let ratingColor = "active";
+                                    if (ep.score <= 3) ratingColor = "warning";
+                                    if (ep.score >= 7) ratingColor = "success";
+                                    return (
+                                        <tr className={"table-" + ratingColor} key={ep.id}>
+                                            <th scope="row" className="text-center">{ep.name}</th>
+                                            <td className="text-center">{ep.code}</td>
+                                            <td className="text-center">{ep.score} / 10</td>
+                                            <td>
+                                                <button type="button" className="close" aria-label="Delete" onClick={e => this.delete(ep.id)}>
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                }, this)
+                            }
+                        </tbody>
+                    </table>
+                ) : ( <NoData error={this.state.err}/> )}
+>>>>>>> 1bd540d07f5356e2c675ed6b62c8126fd377e364
             </div>
           </div>)
           : (<NoData error={this.state.err}/>)
