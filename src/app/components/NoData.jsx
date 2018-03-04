@@ -4,13 +4,14 @@ export default class NoData extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            err: props.error != null,
-            message: props.error
-        };
+        this.setProps(props);
     }
 
     componentWillReceiveProps(props) {
+        this.setProps(props);
+    }
+
+    setProps(props) {
         this.state = {
             err: props.error != null,
             message: props.error
@@ -25,7 +26,7 @@ export default class NoData extends Component {
                     { this.state.err ? (
                             <div>
                                 <br/>
-                                <a className="btn btn-primary" data-toggle="collapse" href="#details" aria-expanded="false" aria-controls="details">
+                                <a className="btn btn-danger" data-toggle="collapse" href="#details" aria-expanded="false" aria-controls="details">
                                     Something gone wrong
                                 </a>
                                 <div className="collapse" id="details">
